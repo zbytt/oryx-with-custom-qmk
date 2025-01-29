@@ -140,7 +140,7 @@ bool achordion_chord(uint16_t tap_hold_keycode,
                      uint16_t other_keycode,
                      keyrecord_t* other_record) {
   //AltGr -> always treat as hold, even on the same hand
-  if (tap_hold_record == KC_RALT){
+  if (tap_hold_keycode == KC_RALT){
     return true;
   }
 
