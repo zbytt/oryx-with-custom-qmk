@@ -14,16 +14,12 @@ enum custom_keycodes {
 
 
 
-enum tap_dance_codes {
-  DANCE_0,
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
     KC_NO,          KC_DELETE,      KC_HOME,        KC_UP,          KC_END,         LCTL(KC_SCLN),                                  KC_F12,         KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_INSERT,      KC_NO,          
     KC_LEFT_SHIFT,  KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_SLASH,       
     KC_TAB,         LT(2,KC_A),     MT(MOD_LALT, KC_S),MT(MOD_LCTL, KC_D),MT(MOD_LSFT, KC_F),KC_G,                                           KC_H,           MT(MOD_LSFT, KC_J),MT(MOD_LCTL, KC_K),MT(MOD_LALT, KC_L),LT(2,KC_SCLN),  KC_QUOTE,       
-    KC_LEFT_GUI,    MT(MOD_RALT, KC_Z),KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         TD(DANCE_0),    KC_DQUO,        
+    KC_LEFT_GUI,    KC_Z,           MT(MOD_RALT, KC_X),KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       MT(MOD_RALT, KC_DOT),KC_UNDS,        KC_DQUO,        
                                                     LT(1,KC_SPACE), KC_BSPC,                                        KC_ESCAPE,      MT(MOD_RALT, KC_ENTER)
   ),
   [1] = LAYOUT_voyager(
@@ -168,73 +164,4 @@ bool achordion_chord(uint16_t tap_hold_keycode,
   return achordion_opposite_hands(tap_hold_record, other_record);
 }
 
-typedef struct {
-    bool is_press_action;
-    uint8_t step;
-} tap;
 
-enum {
-    SINGLE_TAP = 1,
-    SINGLE_HOLD,
-    DOUBLE_TAP,
-    DOUBLE_HOLD,
-    DOUBLE_SINGLE_TAP,
-    MORE_TAPS
-};
-
-static tap dance_state[1];
-
-uint8_t dance_step(tap_dance_state_t *state);
-
-uint8_t dance_step(tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return SINGLE_TAP;
-        else return SINGLE_HOLD;
-    } else if (state->count == 2) {
-        if (state->interrupted) return DOUBLE_SINGLE_TAP;
-        else if (state->pressed) return DOUBLE_HOLD;
-        else return DOUBLE_TAP;
-    }
-    return MORE_TAPS;
-}
-
-
-void on_dance_0(tap_dance_state_t *state, void *user_data);
-void dance_0_finished(tap_dance_state_t *state, void *user_data);
-void dance_0_reset(tap_dance_state_t *state, void *user_data);
-
-void on_dance_0(tap_dance_state_t *state, void *user_data) {
-    if(state->count == 3) {
-        tap_code16(KC_UNDS);
-        tap_code16(KC_UNDS);
-        tap_code16(KC_UNDS);
-    }
-    if(state->count > 3) {
-        tap_code16(KC_UNDS);
-    }
-}
-
-void dance_0_finished(tap_dance_state_t *state, void *user_data) {
-    dance_state[0].step = dance_step(state);
-    switch (dance_state[0].step) {
-        case SINGLE_TAP: register_code16(KC_UNDS); break;
-        case SINGLE_HOLD: register_code16(KC_RIGHT_ALT); break;
-        case DOUBLE_TAP: register_code16(KC_UNDS); register_code16(KC_UNDS); break;
-        case DOUBLE_SINGLE_TAP: tap_code16(KC_UNDS); register_code16(KC_UNDS);
-    }
-}
-
-void dance_0_reset(tap_dance_state_t *state, void *user_data) {
-    wait_ms(10);
-    switch (dance_state[0].step) {
-        case SINGLE_TAP: unregister_code16(KC_UNDS); break;
-        case SINGLE_HOLD: unregister_code16(KC_RIGHT_ALT); break;
-        case DOUBLE_TAP: unregister_code16(KC_UNDS); break;
-        case DOUBLE_SINGLE_TAP: unregister_code16(KC_UNDS); break;
-    }
-    dance_state[0].step = 0;
-}
-
-tap_dance_action_t tap_dance_actions[] = {
-        [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_0, dance_0_finished, dance_0_reset),
-};
