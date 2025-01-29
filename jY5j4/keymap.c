@@ -139,10 +139,10 @@ bool achordion_chord(uint16_t tap_hold_keycode,
                      keyrecord_t* tap_hold_record,
                      uint16_t other_keycode,
                      keyrecord_t* other_record) {
-  // Also allow same-hand holds when the other key is in the rows outside the
-  // alphas. I need the `% (MATRIX_ROWS / 2)` because my keyboards are split.
-  uint8_t row = other_record->event.key.row % (MATRIX_ROWS / 2);
-  if (!(1 <= row && row <= 3)) { return true; }
+  //AltGr -> always treat as hold, even on the same hand
+  if (tap_hold_record == KC_RALT){
+    return true;
+  }
 
   return achordion_opposite_hands(tap_hold_record, other_record);
 }
