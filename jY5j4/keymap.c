@@ -19,7 +19,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,          KC_DELETE,      KC_HOME,        KC_UP,          KC_END,         LCTL(KC_SCLN),                                  KC_F12,         KC_LEFT,        KC_DOWN,        KC_RIGHT,       KC_INSERT,      KC_NO,          
     KC_NO,          KC_Q,           LT(3,KC_W),     KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           LT(4,KC_O),     KC_P,           KC_NO,          
     KC_TAB,         LT(2,KC_A),     MT(MOD_LALT, KC_S),MT(MOD_LCTL, KC_D),MT(MOD_LSFT, KC_F),KC_G,                                           KC_H,           MT(MOD_LSFT, KC_J),MT(MOD_LCTL, KC_K),MT(MOD_LALT, KC_L),LT(2,KC_SCLN),  KC_SLASH,       
-    KC_NO,          MT(MOD_LGUI, KC_Z),KC_X,           MT(MOD_RALT, KC_C),KC_V,           KC_B,                                           KC_N,           KC_M,           MT(MOD_RALT, KC_COMMA),KC_DOT,         KC_UNDS,        KC_NO,          
+    KC_LEFT_GUI,    KC_Z,           KC_X,           MT(MOD_RALT, KC_C),KC_V,           KC_B,                                           KC_N,           KC_M,           MT(MOD_RALT, KC_COMMA),KC_DOT,         KC_UNDS,        KC_NO,          
                                                     LT(1,KC_SPACE), KC_BSPC,                                        KC_ESCAPE,      MT(MOD_RALT, KC_ENTER)
   ),
   [1] = LAYOUT_voyager(
@@ -58,16 +58,6 @@ combo_t key_combos[COMBO_COUNT] = {
     COMBO(combo0, KC_ENTER),
 };
 
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case MT(MOD_LGUI, KC_Z):
-            return 0;
-        case LT(1,KC_SPACE):
-            return TAPPING_TERM -20;
-        default:
-            return TAPPING_TERM;
-    }
-}
 
 extern rgb_config_t rgb_matrix_config;
 
