@@ -160,8 +160,11 @@ bool achordion_chord(uint16_t tap_hold_keycode,
                      keyrecord_t* tap_hold_record,
                      uint16_t other_keycode,
                      keyrecord_t* other_record) {
-  //AltGr -> always treat as hold, even on the same hand
-  if (tap_hold_keycode == KC_RALT){
+  //same hand `hold` thumb keys  
+  if (tap_hold_keycode == MT(MOD_RALT, KC_ENTER)){
+    return true;
+  }
+  if (tap_hold_keycode == LT(1,KC_SPACE)){
     return true;
   }
 
