@@ -3,13 +3,10 @@
   See config.h options at https://docs.qmk.fm/#/config_options?id=the-configh-file
 */
 
-#undef TAPPING_TERM
-#define TAPPING_TERM 150
-
 #define PERMISSIVE_HOLD
 
 #define USB_SUSPEND_WAKEUP_DELAY 0
-#define SERIAL_NUMBER "jY5j4/No5Pyj"
+#define SERIAL_NUMBER "jY5j4/aNvzq3"
 #define LAYER_STATE_8BIT
 #define COMBO_COUNT 1
 
